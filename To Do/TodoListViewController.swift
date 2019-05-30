@@ -12,11 +12,14 @@ class TodoListViewController: UITableViewController{
 
     var itemArray = ["find mike ", "Buy Eggos","destroy demoo"]
     
-    
+    let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        //الكود ده اللي بيحفظ الداتا محليا في الاستورج بتاع الاي فون
+        if let items = defaults.array(forKey: "TodoListArray") as? [String] {
+            itemArray = items
+        }
     }
 
     //ده الكود  اللي هايخلي الداتا تظهر في ال table view
@@ -66,8 +69,11 @@ class TodoListViewController: UITableViewController{
             (action) in
             
             //what will happen once the user hits the add button on our uialert
-            self.tableView.reloadData()
+            
             self.itemArray.append(textfiled.text!)
+            // بيعمل ابديت لل tableview تاني علشان يظهر الداتا الجديده
+            self.defaults.set(self.itemArray, forKey: "TodoListArray")
+            self.tableView.reloadData()
         }
         alert.addTextField { (alertTextField) in
             alertTextField.placeholder = "Create new item"
